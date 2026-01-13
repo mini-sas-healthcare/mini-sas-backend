@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 from flask import Flask
 from app.extensions.api import api
 from app.extensions.db import init_db
@@ -15,3 +18,6 @@ def create_app():
     return app
 
 app = create_app()
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080, debug=True)
