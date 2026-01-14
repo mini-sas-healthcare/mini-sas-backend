@@ -1,8 +1,15 @@
 from flask_restx import Namespace, Resource
 
-ns = Namespace("providers", description="Provider scheduling")
+# This variable name MUST match the import in api.py
+schedule_ns = Namespace('schedules', description='Provider schedule operations')
 
-@ns.route("/<string:provider_id>/slots")
-class ProviderSlots(Resource):
+@schedule_ns.route('/<string:provider_id>/available-slots')
+class AvailableSlots(Resource):
     def get(self, provider_id):
-        return {"success": True, "data": [], "error": None}
+        """Fetch first 3 available slots for a provider"""
+        # Skeleton response for now
+        return {
+            "success": True,
+            "data": [],
+            "error": None
+        }, 200
