@@ -1,9 +1,18 @@
 from flask_restx import Namespace, Resource
-from app.common.responses import success
+from app.modules.health.service import HealthService
 
-ns = Namespace("health", description="Health check")
+# Namespace for Swagger documentation
+health_ns = Namespace('health', description='Health Check Operations')
 
-@ns.route("")
-class Health(Resource):
+@health_ns.route('')
+class HealthResource(Resource):
     def get(self):
-        return success({"status": "UP"})
+        """Service status and DB connectivity check"""
+        health_data = HealthService.check_health()
+        
+        # Frozen Response Envelope
+        return {
+            "success": True,
+            "data": health_data,
+            "error": None
+        }, 200
