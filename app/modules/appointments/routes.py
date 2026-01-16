@@ -4,6 +4,7 @@ from app.modules.appointments.service import AppointmentService
 
 appointment_ns = Namespace("appointments", description="Appointment Booking APIs")
 
+# doctor side functionality
 @appointment_ns.route("/book")
 class BookAppointment(Resource):
     def post(self):
