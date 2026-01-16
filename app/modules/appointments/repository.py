@@ -3,6 +3,8 @@ from app.extensions.db import SessionLocal
 import uuid
 
 class AppointmentRepository:
+
+# doctor side functionality
     @staticmethod
     def create_booking(data):
         """
@@ -63,3 +65,5 @@ class AppointmentRepository:
             raise e
         finally:
             session.close()
+    
+
