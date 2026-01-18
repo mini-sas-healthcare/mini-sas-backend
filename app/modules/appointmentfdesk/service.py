@@ -6,9 +6,11 @@ class FrontDeskAppointmentService:
     @staticmethod
     def confirm_appointment(data):
         appointment_id = data["appointment_id"]
+        billing_data = data.get("billing")
 
         result = FrontDeskAppointmentRepository.confirm_appointment(
-            appointment_id=appointment_id
+            appointment_id=appointment_id,
+            billing_data=billing_data
         )
 
         if result == "NOT_FOUND":
@@ -17,4 +19,7 @@ class FrontDeskAppointmentService:
         if result == "ALREADY_CONFIRMED":
             return success({"message": "Appointment already confirmed"})
 
-        return success({"status": "CONFIRMED"})
+        return success({
+            "status": "CONFIRMED",
+            "billing": "CREATED" if billing_data else "SKIPPED"
+        })

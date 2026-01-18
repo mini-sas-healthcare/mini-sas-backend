@@ -14,3 +14,4 @@ psql -U postgres -d mini_sas -f db/005_provider_schedule.sql
 psql -U postgres -d mini_sas -f db/006_appointments.sql
 psql -U postgres -d mini_sas -f db/007_cpt_codes.sql
 psql -U postgres -d mini_sas -f db/008_payers.sql
+psql -U postgres -d mini_sas -f db/009_appointment_billing.sql

@@ -2,6 +2,7 @@ from flask_restx import Api
 from app.modules.health.routes import health_ns
 from app.modules.schedules.routes import schedule_ns
 from app.modules.appointments.routes import appointment_ns
+from app.modules.billing.routes import billing_ns
 from app.modules.appointmentfdesk.routes import appointment_ns as frontdesk_appointment_ns
 
 # If you want it at /swagger, you can set doc='/swagger'
@@ -16,3 +17,4 @@ api.add_namespace(health_ns, path="/health")
 api.add_namespace(schedule_ns, path="/schedules")
 api.add_namespace(appointment_ns, path="/appointments")
 api.add_namespace(frontdesk_appointment_ns, path="/appointments/frontdesk")
+api.add_namespace(billing_ns, path="/billing")
