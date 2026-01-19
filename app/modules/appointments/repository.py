@@ -65,5 +65,70 @@ class AppointmentRepository:
             raise e
         finally:
             session.close()
-    
+            
+    @staticmethod
+    def get_by_provider(provider_id):
+        """Fetch all appointments for a specific doctor"""
+        session = SessionLocal()
+        try:
+            # We select specific columns from your actual appointments schema
+            query = text("""
+                SELECT appointment_id, patient_id, slot_time, status, retry_count
+                FROM appointments 
+                WHERE provider_id = :provider_id
+                ORDER BY slot_time ASC
+            """)
+            result = session.execute(query, {"provider_id": provider_id})
+            # Convert SQLAlchemy rows to a list of dictionaries for JSON
+            return [dict(row._mapping) for row in result]
+        finally:
+            session.close()
 
+    @staticmethod
+    def get_by_provider(provider_id):
+        session = SessionLocal()
+        try:
+            query = text("""
+                SELECT appointment_id, patient_id, slot_time, status, retry_count
+                FROM appointments 
+                WHERE provider_id = :provider_id
+                ORDER BY slot_time ASC
+            """)
+            result = session.execute(query, {"provider_id": provider_id})
+            
+            # Use a list comprehension to convert datetime objects to strings
+            return [
+                {
+                    "appointment_id": row.appointment_id,
+                    "patient_id": row.patient_id,
+                    "slot_time": row.slot_time.isoformat(), # FIX: Convert to string
+                    "status": row.status,
+                    "retry_count": row.retry_count
+                } for row in result
+            ]
+        finally:
+            session.close()
+
+    @staticmethod
+    def get_all():
+        session = SessionLocal()
+        try:
+            query = text("""
+                SELECT appointment_id, provider_id, patient_id, slot_time, status 
+                FROM appointments 
+                ORDER BY created_at DESC
+            """)
+            result = session.execute(query)
+            
+            # FIX: Convert slot_time to isoformat here as well
+            return [
+                {
+                    "appointment_id": row.appointment_id,
+                    "provider_id": row.provider_id,
+                    "patient_id": row.patient_id,
+                    "slot_time": row.slot_time.isoformat(),
+                    "status": row.status
+                } for row in result
+            ]
+        finally:
+            session.close()

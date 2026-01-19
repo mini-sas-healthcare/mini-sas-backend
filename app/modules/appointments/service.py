@@ -23,3 +23,13 @@ class AppointmentService:
             "data": result,
             "error": None
         }, 201
+        
+    @staticmethod
+    def get_provider_schedule(provider_id):
+        """Logic for provider-specific viewing"""
+        return AppointmentRepository.get_by_provider(provider_id)
+
+    @staticmethod
+    def get_all_appointments():
+        """Logic for system-wide viewing"""
+        return AppointmentRepository.get_all()

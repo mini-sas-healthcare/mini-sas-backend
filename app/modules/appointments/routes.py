@@ -3,7 +3,21 @@ from flask_restx import Namespace, Resource
 from app.modules.appointments.service import AppointmentService
 
 appointment_ns = Namespace("appointments", description="Appointment Booking APIs")
+appointment_ns = Namespace("appointments", description="Appointment Management APIs")
 
+@appointment_ns.route("/provider/<string:provider_id>")
+class ProviderAppointments(Resource):
+    def get(self, provider_id):
+        """Fetch appointments for a specific doctor"""
+        appointments = AppointmentService.get_provider_schedule(provider_id)
+        return {"success": True, "data": appointments}, 200
+
+@appointment_ns.route("/all")
+class AllAppointments(Resource):
+    def get(self):
+        """Fetch all appointments across the system"""
+        appointments = AppointmentService.get_all_appointments()
+        return {"success": True, "data": appointments}, 200
 # doctor side functionality
 @appointment_ns.route("/book")
 class BookAppointment(Resource):
