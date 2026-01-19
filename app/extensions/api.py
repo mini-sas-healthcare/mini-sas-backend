@@ -5,6 +5,8 @@ from app.modules.appointments.routes import appointment_ns
 from app.modules.billing.routes import billing_ns
 from app.modules.appointmentfdesk.routes import appointment_ns as frontdesk_appointment_ns
 from app.modules.patients.routes import patient_ns
+from app.auth.routes import auth_ns
+
 
 # If you want it at /swagger, you can set doc='/swagger'
 api = Api(
@@ -14,6 +16,7 @@ api = Api(
     doc="/"  # This makes Swagger load at http://localhost:8080/
 )
 
+api.add_namespace(auth_ns, path="/auth")
 api.add_namespace(health_ns, path="/health")
 api.add_namespace(schedule_ns, path="/schedules")
 api.add_namespace(appointment_ns, path="/appointments")
