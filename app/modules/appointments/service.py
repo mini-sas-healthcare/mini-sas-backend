@@ -1,6 +1,9 @@
 from app.modules.appointments.repository import AppointmentRepository
+from app.common.responses import success
 
 class AppointmentService:
+
+# doctor side functionality
     @staticmethod
     def book(data):
         # In a real scenario, you'd call a PatientRepository here 

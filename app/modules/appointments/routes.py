@@ -18,6 +18,7 @@ class AllAppointments(Resource):
         """Fetch all appointments across the system"""
         appointments = AppointmentService.get_all_appointments()
         return {"success": True, "data": appointments}, 200
+# doctor side functionality
 @appointment_ns.route("/book")
 class BookAppointment(Resource):
     def post(self):
