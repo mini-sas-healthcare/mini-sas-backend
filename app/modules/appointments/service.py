@@ -62,3 +62,25 @@ class AppointmentService:
             "data": {"appointment_id": appointment_id},
             "error": None
         }, 200
+
+    @staticmethod
+    def get_history(provider_id, params):
+        """
+        Service logic to fetch and format history data.
+        """
+        try:
+            # Default to a broad range if dates aren't provided
+            start_date = params.get('start_date', '2000-01-01T00:00:00')
+            end_date = params.get('end_date', '2100-01-01T00:00:00')
+            
+            history_data = AppointmentRepository.get_provider_history(
+                provider_id, start_date, end_date
+            )
+            
+            return {
+                "success": True,
+                "data": history_data,
+                "error": None
+            }, 200
+        except Exception as e:
+            return {"success": False, "error": str(e)}, 400

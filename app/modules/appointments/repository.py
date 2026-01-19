@@ -234,3 +234,49 @@ class AppointmentRepository:
             raise
         finally:
             session.close()
+            
+    @staticmethod
+    def get_provider_history(provider_id, start_date, end_date):
+        """
+        Fetches past appointments and basic analytics for a provider.
+        """
+        session = SessionLocal()
+        try:
+            # Query for the appointment list within the date range
+            query = text("""
+                SELECT appointment_id, patient_id, slot_time, status, cancelled_by
+                FROM appointments 
+                WHERE provider_id = :provider_id 
+                AND slot_time BETWEEN :start_date AND :end_date
+                ORDER BY slot_time DESC
+            """)
+            
+            result = session.execute(query, {
+                "provider_id": provider_id,
+                "start_date": start_date,
+                "end_date": end_date
+            })
+            
+            appointments = []
+            stats = {"total": 0, "completed": 0, "cancelled": 0}
+            
+            for row in result:
+                appt = {
+                    "appointment_id": row.appointment_id,
+                    "patient_id": row.patient_id,
+                    "slot_time": row.slot_time.isoformat(),
+                    "status": row.status,
+                    "cancelled_by": row.cancelled_by
+                }
+                appointments.append(appt)
+                
+                # Simple Analytics Logic
+                stats["total"] += 1
+                if row.status == 'COMPLETED':
+                    stats["completed"] += 1
+                elif row.status == 'CANCELLED':
+                    stats["cancelled"] += 1
+
+            return {"appointments": appointments, "stats": stats}
+        finally:
+            session.close()

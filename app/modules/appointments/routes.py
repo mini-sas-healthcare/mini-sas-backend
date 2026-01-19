@@ -56,3 +56,15 @@ class AllAppointments(Resource):
         """Fetch all appointments across the system"""
         appointments = AppointmentService.get_all_appointments()
         return {"success": True, "data": appointments}, 200
+
+
+@appointment_ns.route("/provider/<string:provider_id>/history")
+class AppointmentHistory(Resource):
+    @appointment_ns.doc(params={
+        'start_date': 'ISO format start date (e.g. 2026-01-01T00:00:00)',
+        'end_date': 'ISO format end date'
+    })
+    def get(self, provider_id):
+        """Fetch appointment history and analytics for a provider"""
+        params = request.args # Extracts ?start_date=... from URL
+        return AppointmentService.get_history(provider_id, params)
