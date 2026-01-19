@@ -31,3 +31,16 @@ class PatientList(Resource):
             return {"success": True, "message": "Patient created"}, 201
         finally:
             session.close()
+
+
+from flask_restx import Namespace, Resource
+from app.modules.patients.service import PatientService
+
+
+@patient_ns.route("/<string:patient_id>")
+class GetPatient(Resource):
+    def get(self, patient_id):
+        """
+        Get patient details by patient_id
+        """
+        return PatientService.get_patient_by_id(patient_id)

@@ -4,6 +4,7 @@ from app.modules.schedules.routes import schedule_ns
 from app.modules.appointments.routes import appointment_ns
 from app.modules.billing.routes import billing_ns
 from app.modules.appointmentfdesk.routes import appointment_ns as frontdesk_appointment_ns
+from app.modules.patients.routes import patient_ns
 
 # If you want it at /swagger, you can set doc='/swagger'
 api = Api(
@@ -18,3 +19,4 @@ api.add_namespace(schedule_ns, path="/schedules")
 api.add_namespace(appointment_ns, path="/appointments")
 api.add_namespace(frontdesk_appointment_ns, path="/appointments/frontdesk")
 api.add_namespace(billing_ns, path="/billing")
+api.add_namespace(patient_ns, path="/patients")
