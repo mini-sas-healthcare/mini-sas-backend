@@ -23,3 +23,19 @@ class FrontDeskAppointmentService:
             "status": "CONFIRMED",
             "billing": "CREATED" if billing_data else "SKIPPED"
         })
+    
+
+    @staticmethod
+    def get_pending_appointments():
+        appointments = (
+            FrontDeskAppointmentRepository.get_pending_appointments()
+        )
+        return success(appointments)
+
+
+    @staticmethod
+    def get_todays_appointments():
+        appointments = (
+            FrontDeskAppointmentRepository.get_todays_appointments()
+        )
+        return success(appointments)
