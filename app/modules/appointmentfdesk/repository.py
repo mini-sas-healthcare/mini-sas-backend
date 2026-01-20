@@ -91,3 +91,53 @@ class FrontDeskAppointmentRepository:
             raise e
         finally:
             session.close()
+
+
+    @staticmethod
+    def get_pending_appointments():
+        session = SessionLocal()
+        try:
+            query = text("""
+                SELECT
+                    appointment_id,
+                    provider_id,
+                    patient_id,
+                    slot_time,
+                    status,
+                    created_at,
+                    updated_at
+                FROM appointments
+                WHERE status = 'PENDING'
+                ORDER BY created_at ASC
+            """)
+
+            rows = session.execute(query).mappings().all()
+            [dict(row) for row in rows]
+
+        finally:
+            session.close()
+
+    @staticmethod
+    def get_todays_appointments():
+        session = SessionLocal()
+        try:
+            query = text("""
+                SELECT
+                    appointment_id,
+                    provider_id,
+                    patient_id,
+                    slot_time,
+                    status,
+                    created_at,
+                    updated_at
+                FROM appointments
+                WHERE slot_time >= DATE_TRUNC('day', NOW())
+                  AND slot_time < DATE_TRUNC('day', NOW()) + INTERVAL '1 day'
+                ORDER BY slot_time ASC
+            """)
+
+            rows = session.execute(query).mappings().all()
+            [dict(row) for row in rows]
+
+        finally:
+            session.close()

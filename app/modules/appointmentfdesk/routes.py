@@ -26,3 +26,21 @@ class ConfirmAppointment(Resource):
         """
         payload = appointment_ns.payload
         return FrontDeskAppointmentService.confirm_appointment(payload)
+
+
+@appointment_ns.route("/pending")
+class PendingAppointments(Resource):
+    def get(self):
+        """
+        Get all appointments with status PENDING
+        """
+        return FrontDeskAppointmentService.get_pending_appointments()
+    
+
+@appointment_ns.route("/today")
+class TodaysAppointments(Resource):
+    def get(self):
+        """
+        Get all today's appointments (UTC)
+        """
+        return FrontDeskAppointmentService.get_todays_appointments()
