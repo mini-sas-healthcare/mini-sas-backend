@@ -1,7 +1,7 @@
 from flask import request
 from flask_restx import Namespace, Resource, fields
 from app.modules.schedules.service import ScheduleService
-# Import the actual service responsible for booking logic
+from app.auth.decorators import roles_required
 from app.modules.appointments.service import AppointmentService 
 
 schedule_ns = Namespace("schedules", description="Schedules and Availability")
@@ -11,6 +11,13 @@ booking_input_model = schedule_ns.model('BookingInput', {
     'patient_id': fields.String(required=True, example='PAT-001', description='The business patient_id'),
     'slot_id': fields.String(required=True, example='uuid-goes-here', description='The UUID of the slot')
 })
+
+# Add the security parameter to the Namespace definition
+schedule_ns = Namespace(
+    "schedules", 
+    description="Schedules and Availability",
+    security='Bearer'  # <--- This connects the lock icon to your endpoints
+)
 
 # Swagger model for documentation
 bulk_slot_model = schedule_ns.model('BulkSlotModel', {
@@ -30,8 +37,10 @@ class AvailableSlots(Resource):
 
 @schedule_ns.route("/<string:provider_id>/bulk-slots")
 class BulkSlotCreation(Resource):
+    @roles_required('PROVIDER') # Only a Provider with a valid JWT can run this
+    @schedule_ns.doc(security='Bearer')
     @schedule_ns.expect(bulk_slot_model)
     def post(self, provider_id):
-        """Create multiple availability slots at once"""
+        """Create multiple availability slots at once (Provider Only)"""
         data = request.json
         return ScheduleService.generate_slots(provider_id, data)
