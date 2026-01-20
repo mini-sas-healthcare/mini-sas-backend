@@ -6,14 +6,24 @@ from app.modules.billing.routes import billing_ns
 from app.modules.appointmentfdesk.routes import appointment_ns as frontdesk_appointment_ns
 from app.modules.patients.routes import patient_ns
 from app.auth.routes import auth_ns
+from flask_restx import Api
 
+# Define the authorization scheme
+authorizations = {
+    'Bearer': {
+        'type': 'apiKey',
+        'in': 'header',
+        'name': 'Authorization',
+        'description': "Input format: Bearer <your_jwt_token>"
+    }
+}
 
-# If you want it at /swagger, you can set doc='/swagger'
 api = Api(
-    title="Mini-SAS API", 
-    version="1.0", 
-    description="Smart Appointment Scheduler",
-    doc="/"  # This makes Swagger load at http://localhost:8080/
+    title="Mini-SAS Healthcare API",
+    version="1.0",
+    description="Backend for Appointment Management",
+    authorizations=authorizations, # Enable security in Swagger
+    security='Bearer'              # Apply it globally (optional)
 )
 
 api.add_namespace(auth_ns, path="/auth")
