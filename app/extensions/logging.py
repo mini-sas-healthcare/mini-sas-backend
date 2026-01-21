@@ -1,18 +1,19 @@
 import logging
 import sys
 
-def configure_logging(app):
-    # Define the log format
+# Rename this to match your main.py call
+def init_logging(app):
+    """
+    Initializes the logging configuration for the Flask application.
+    """
     log_format = "[%(asctime)s] %(levelname)s in %(module)s: %(message)s"
     
-    # Configure the root logger
     logging.basicConfig(
         level=logging.INFO,
         format=log_format,
         handlers=[
-            logging.StreamHandler(sys.stdout) # Outputs to terminal/GCP logs
+            logging.StreamHandler(sys.stdout) # Crucial for GCP Cloud Logging
         ]
     )
 
-    # Attach the logger to the Flask app
-    app.logger.info("Logging has been initialized.")
+    app.logger.info("Logging extension initialized successfully.")
